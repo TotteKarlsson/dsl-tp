@@ -144,8 +144,8 @@ UTF32Encoding
 Windows1250Encoding
 Windows1251Encoding
 Windows1252Encoding
-# WindowsConsoleChannel
-# EventLogChannel
+WindowsConsoleChannel
+EventLogChannel
 TextEncoding
 Environment
 UUID
