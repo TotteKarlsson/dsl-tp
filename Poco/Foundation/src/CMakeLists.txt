@@ -115,6 +115,7 @@ StreamTokenizer
 String
 StringTokenizer
 SynchronizedObject
+SyslogChannel
 Task
 TaskManager
 TaskNotification
@@ -141,9 +142,9 @@ UnicodeConverter
 UTF8Encoding
 UTF16Encoding
 UTF32Encoding
-#Windows1250Encoding
-#Windows1251Encoding
-#Windows1252Encoding
+Windows1250Encoding
+Windows1251Encoding
+Windows1252Encoding
 #WindowsConsoleChannel
 #EventLogChannel
 TextEncoding
