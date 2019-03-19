@@ -45,6 +45,9 @@ if(${MSVC})
 endif()
 
 #Add Third Party Folders
+
+add_subdirectory(tclap)
+
 if(${BUILD_SQLITE})
     add_subdirectory(SQLite)
 endif()
