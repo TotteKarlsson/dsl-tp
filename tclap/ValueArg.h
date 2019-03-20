@@ -400,7 +400,7 @@ template<class T>
 void ValueArg<T>::_extractValue( const std::string& val ) 
 {
     try {
-	ExtractValue(_value, val, ArgTraits<T>::ValueCategory());
+	ExtractValue(_value, val, typename ArgTraits<T>::ValueCategory());
     } catch( ArgParseException &e) {
 	throw ArgParseException(e.error(), toString());
     }
