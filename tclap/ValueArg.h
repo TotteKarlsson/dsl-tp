@@ -1,4 +1,4 @@
-/****************************************************************************** 
+/******************************************************************************
  * 
  *  file:  ValueArg.h
  * 
@@ -400,7 +400,11 @@ template<class T>
 void ValueArg<T>::_extractValue( const std::string& val ) 
 {
     try {
+#if defined(__clang__)
 	ExtractValue(_value, val, typename ArgTraits<T>::ValueCategory());
+#else
+	ExtractValue(_value, val, ArgTraits<T>::ValueCategory());
+#endif
     } catch( ArgParseException &e) {
 	throw ArgParseException(e.error(), toString());
     }
