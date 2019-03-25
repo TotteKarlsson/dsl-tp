@@ -115,7 +115,7 @@ StreamTokenizer
 String
 StringTokenizer
 SynchronizedObject
-SyslogChannel
+#SyslogChannel
 Task
 TaskManager
 TaskNotification
@@ -183,6 +183,17 @@ diy-fp.cc
 strtod.cc
 )
 
+if (CMAKE_SYSTEM MATCHES "Windows")
+    set(sources ${sources} 
+    WindowsConsoleChannel
+    EventLogChannel
+    )
+endif()
+
+if (CMAKE_SYSTEM MATCHES "Linux")
+    set(sources ${sources} SyslogChannel )
+endif()
+
 if(${BORLAND})
 add_definitions(
              -w-8012                     #Comparing signed /unsigned
@@ -199,16 +210,15 @@ add_definitions( -D_THREADSAFE)
 add_definitions( -D_NOTCL)
 endif()
 
-if(CMAKE_SYSTEM MATCHES "Windows")
- 
- add_definitions( -DPOCO_OS_FAMILY_WINDOWS)
- set(SYSLIBS iphlpapi gdi32 odbc32)
- 
- if (CMAKE_C_COMPILER_ID MATCHES "MSVC")
-        message(STATUS "XXX: MS Visual Compiler detected")
- endif (CMAKE_C_COMPILER_ID MATCHES "MSVC")
-
-endif(CMAKE_SYSTEM MATCHES "Windows")
+#if(CMAKE_SYSTEM MATCHES "Windows")
+# add_definitions( -DPOCO_OS_FAMILY_WINDOWS)
+# set(SYSLIBS iphlpapi gdi32 odbc32)
+# 
+# if (CMAKE_C_COMPILER_ID MATCHES "MSVC")
+#        message(STATUS "XXX: MS Visual Compiler detected")
+# endif (CMAKE_C_COMPILER_ID MATCHES "MSVC")
+#
+#endif(CMAKE_SYSTEM MATCHES "Windows")
 
 if (CMAKE_SYSTEM MATCHES "Linux")
   add_definitions( -DPOCO_OS_FAMILY_UNIX )

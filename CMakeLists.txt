@@ -47,6 +47,7 @@ endif()
 #Add Third Party Folders
 
 add_subdirectory(tclap)
+add_subdirectory(mkjson)
 
 if(${BUILD_SQLITE})
     add_subdirectory(SQLite)
