@@ -8,7 +8,7 @@
 
 #ifndef MKJSON_H
 #define MKJSON_H
-//#include "mkjsonExporter.h"
+#include "mkjsonExporter.h"
 // JSON container types
 enum mkjson_container_type
 {
@@ -45,6 +45,6 @@ enum mkjson_value_type
 	MKJSON_IGN_NULL        = (-MKJSON_NULL)
 };
 
-char MKJSON_API *mkjson( enum mkjson_container_type otype, int count, ... );
+MKJSON_API char* mkjson( enum mkjson_container_type otype, int count, ... );
 
 #endif
