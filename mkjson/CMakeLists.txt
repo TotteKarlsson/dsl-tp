@@ -17,8 +17,9 @@ if(${BUILD_SHARED_LIBS})
 
     if(WIN32)
         set_property(TARGET ${target}  
-        PROPERTY COMPILE_DEFINITIONS 
-            "MKJSON_API=__declspec(dllexport)")
+                        PROPERTY COMPILE_DEFINITIONS 
+                        EXPORT_MKJSON
+        )
     endif()            
 
     install(    
