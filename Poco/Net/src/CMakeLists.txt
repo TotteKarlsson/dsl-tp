@@ -4,18 +4,18 @@ set(target poco_net)
 
 # Option that allows users to build static and/or shared libraries
 # ----------------------------------------------------------------
-OPTION(POCO_BUILD_STATIC_LIBS "Build static libraries" ON)
-OPTION(POCO_BUILD_SHARED_LIBS "Build shared libraries" OFF)
+OPTION(POCO_BUILD_STATIC_LIBS "Build static libraries" OFF)
+OPTION(POCO_BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 set(sources 
-#AbstractHTTPRequestHandler
+AbstractHTTPRequestHandler
 DNS
-#DatagramSocket
-#DatagramSocketImpl
-#DialogSocket
-#FTPClientSession
-#FTPStreamFactory
-#FilePartSource
+DatagramSocket
+DatagramSocketImpl
+DialogSocket
+FTPClientSession
+FTPStreamFactory
+FilePartSource
 HTMLForm
 HTTPAuthenticationParams
 HTTPBasicCredentials
@@ -56,30 +56,30 @@ HostEntry
 #ICMPSocketImpl
 #ICMPv4PacketImpl
 IPAddress
-#MailMessage
-#MailRecipient
-#MailStream
-#MediaType
+MailMessage
+MailRecipient
+MailStream
+MediaType
 MessageHeader
-#MulticastSocket
-#MultipartReader
-#MultipartWriter
+MulticastSocket
+MultipartReader
+MultipartWriter
 NameValueCollection
 NetException
-#NetworkInterface
-#NullPartHandler
-#POP3ClientSession
-#PartHandler
-#PartSource
-#QuotedPrintableDecoder
-#QuotedPrintableEncoder
+NetworkInterface
+NullPartHandler
+POP3ClientSession
+PartHandler
+PartSource
+QuotedPrintableDecoder
+QuotedPrintableEncoder
 RawSocket
 RawSocketImpl
-#RemoteSyslogChannel
-#RemoteSyslogListener
-#SMTPClientSession
-#ServerSocket
-#ServerSocketImpl
+RemoteSyslogChannel
+RemoteSyslogListener
+SMTPClientSession
+ServerSocket
+ServerSocketImpl
 Socket
 SocketAddress
 SocketImpl
@@ -89,65 +89,61 @@ SocketReactor
 SocketStream
 StreamSocket
 StreamSocketImpl
-#StringPartSource
-#TCPServer
-#TCPServerConnection
-#TCPServerConnectionFactory
-#TCPServerDispatcher
-#TCPServerParams
+StringPartSource
+TCPServer
+TCPServerConnection
+TCPServerConnectionFactory
+TCPServerDispatcher
+TCPServerParams
 #WebSocket
 #WebSocketImpl
 )
-
-
-#if(CMAKE_SYSTEM MATCHES "Windows")
-# 
-#endif(CMAKE_SYSTEM MATCHES "Windows")
-#
-#if (CMAKE_SYSTEM MATCHES "Linux")
-#  add_definitions( -DPOCO_OS_FAMILY_UNIX )
-#  # Standard 'must be' defines
-#  add_definitions( -D_XOPEN_SOURCE=500 -D_REENTRANT -D_THREAD_SAFE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64)
-#  set(SYSLIBS  pthread dl rt)
-#endif(CMAKE_SYSTEM MATCHES "Linux")
 
 include_directories(
 ../../Foundation/include
 ../../Net/include
 )
 
-
-#Then the static version
-add_library(${target}-static STATIC ${sources})
-
-set_property(TARGET ${target}-static  
-             PROPERTY  COMPILE_DEFINITIONS 
-                       POCO_STATIC
-             ) 
-
-if(WIN32)
-set_property(TARGET ${target}-static  
-             PROPERTY  COMPILE_DEFINITIONS 
-                       WIN32
-             ) 
-
+if(${BORLAND})
+add_definitions(
+             -w-8012                     #Comparing signed /unsigned
+             -w-8057                     #Parameter never used
+             -w-8004                     #'var' is assigned a value that is never used
+             -w-8123                     #Path not found
+             -w-8066                     #Unreachable code
+             -w-8104                     #Local static with constructor...
+             -w-8008                     #Condition is always false..
+             -w-8022 
+        )
+add_definitions( -D_WIN32)
+add_definitions( -D_THREADSAFE)
+add_definitions( -D_NOTCL)
 endif()
 
 
-#set_property(TARGET ${target}-static  
-#PROPERTY  COMPILE_DEFINITIONS 
-#POCO_STATIC
-#PCRE_STATIC
-#) 
-#
-#if(WIN32)
-#set_property(TARGET ${target}-static  
-#PROPERTY COMPILE_DEFINITIONS 
-#WIN32
-#) 
-#
-#endif()
-#
+if(BUILD_SHARED_LIBS)
+    add_library(${target} SHARED ${sources})
+    target_link_libraries(${target} poco_foundation)
+
+    if(WIN32)
+        set_property(TARGET ${target}  
+                     PROPERTY  COMPILE_DEFINITIONS 
+                     WIN32
+                     POCO_DLL
+                     Net_EXPORTS
+                     ) 
+        message("Building Poco Shared Library on Windows")
+    endif()
+
+    target_link_libraries(${target} poco_foundation iphlpapi)
+
+    install(TARGETS ${target} 
+        RUNTIME DESTINATION bin 
+        LIBRARY DESTINATION lib 
+        ARCHIVE DESTINATION lib)
+endif()
+
+
 #INSTALLING ======================
 set(poco_net_include_folder ${CMAKE_CURRENT_SOURCE_FOLDER}../include/Poco/Net)
 
@@ -157,7 +153,7 @@ FILE (GLOB net_headers ${poco_net_include_folder}/*.h)
 install(FILES ${net_headers} DESTINATION include/Poco/Net)
 
 
-install(TARGETS ${target}-static 
+install(TARGETS ${target} 
 LIBRARY DESTINATION lib 
 ARCHIVE DESTINATION lib
 )

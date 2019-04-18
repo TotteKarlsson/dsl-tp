@@ -79,18 +79,12 @@ HostEntry DNS::hostByName(const std::string& hostname)
 	struct addrinfo hints;
 	std::memset(&hints, 0, sizeof(hints));
 	hints.ai_flags = AI_CANONNAME | AI_ADDRCONFIG;
-    #if !defined(__BORLANDC__)
 	int rc = getaddrinfo(hostname.c_str(), NULL, &hints, &pAI); 
-    #else
-	int rc = -1;//getaddrinfo(hostname.c_str(), NULL, &hints, &pAI); 
-    #endif
 
 	if (rc == 0)
 	{
 		HostEntry result(pAI);
-        #if !defined(__BORLANDC__)		
 		freeaddrinfo(pAI);
-        #endif
 		return result;
 	}
 	else
@@ -130,18 +124,11 @@ HostEntry DNS::hostByAddress(const IPAddress& address)
 		std::memset(&hints, 0, sizeof(hints));
 		hints.ai_flags = AI_CANONNAME | AI_ADDRCONFIG;
     
-        #if !defined(__BORLANDC__)		
-        rc = getaddrinfo(fqname, NULL, &hints, &pAI);
-        #else
-        rc = -1;
-        #endif
-
+	      rc = getaddrinfo(fqname, NULL, &hints, &pAI);
 		if (rc == 0)
 		{
 			HostEntry result(pAI);
-            #if !defined(__BORLANDC__)		
 			freeaddrinfo(pAI);
-            #endif
 			return result;
 		}
 		else
