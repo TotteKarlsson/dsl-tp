@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(DSL_THIRD_PARTIES)
 
 #----- ThirdParties
+set(LIBRARY_POSTFIX  "" CACHE STRING "Appended to library name")
 OPTION(BUILD_SHARED_LIBS        "Build SHARED libs"	                    ON)
 OPTION(BUILD_STATIC_LIBS        "Build STATIC libs"	                    OFF)
 

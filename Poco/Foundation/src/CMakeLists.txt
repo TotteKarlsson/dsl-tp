@@ -249,6 +249,7 @@ if(BUILD_SHARED_LIBS)
                      ) 
         message("Building Poco Shared Library on Windows")
     target_link_libraries(${target} "iphlpapi")
+    set_target_properties(${target} PROPERTIES OUTPUT_NAME ${target}${LIBRARY_POSTFIX})
     endif()
     install(TARGETS ${target} 
         RUNTIME DESTINATION bin 

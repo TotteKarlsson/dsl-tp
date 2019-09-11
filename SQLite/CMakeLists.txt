@@ -16,9 +16,10 @@ if(${BUILD_SHARED_LIBS})
     )
 
     if(WIN32)
-        set_property(TARGET ${target}  
-        PROPERTY COMPILE_DEFINITIONS 
-            "SQLITE_API=__declspec(dllexport)")
+        set_target_properties(${target}  PROPERTIES
+        COMPILE_DEFINITIONS "SQLITE_API=__declspec(dllexport)"
+        OUTPUT_NAME ${target}${LIBRARY_POSTFIX}
+        )
     endif()            
 
     install(    

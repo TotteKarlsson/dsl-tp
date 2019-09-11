@@ -30,7 +30,9 @@ if(BUILD_SHARED_LIBS)
     set_target_properties(tinyxml2 PROPERTIES
         COMPILE_DEFINITIONS "TINYXML2_EXPORT"
         VERSION "${GENERIC_LIB_VERSION}"
-        SOVERSION "${GENERIC_LIB_SOVERSION}")
+        SOVERSION "${GENERIC_LIB_SOVERSION}"
+        OUTPUT_NAME ${target}${LIBRARY_POSTFIX}
+        )
 
 
     if(MSVC)
