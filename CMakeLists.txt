@@ -8,26 +8,66 @@ endif()
 #----- ThirdParties
 OPTION(BUILD_STATIC_LIBS        "Build STATIC libs"	                    OFF)
 OPTION(BUILD_SHARED_LIBS        "Build SHARED libs"	                    ON)
-OPTION(BUILD_TINYXML2           "Build TINYXML2"	                    ON)
-OPTION(BUILD_SQLITE	            "Build SQLite"	                        ON)
+OPTION(BUILD_TINYXML2           "Build TINYXML2"	                    OFF)
+OPTION(BUILD_SQLITE	            "Build SQLite"	                        OFF)
 OPTION(BUILD_POCO	            "Build POCO"	                        ON)
-OPTION(BUILD_CURL	            "Build cURL"	                        ON)
+OPTION(BUILD_CURL	            "Build cURL"	                        OFF)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY 	${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY 	${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY 	${PROJECT_BINARY_DIR}/bin)
 
 #=== OTHER DEFINITIONS 
-if(${BORLAND})
-add_definitions(
-             -w-8012                     #Comparing signed /unsigned
-             -w-8057                     #Parameter never used
-             -w-8004                     #'var' is assigned a value that is never used
-             -w-8123                     #Path not found
-             -w-8066                     #Unreachable code
-             -w-8104                     #Local static with constructor...
-             -w-8008                     #Condition is always false..
-        )
+if(${BORLAND} )
+
+    message("Compiling using a BORLAND Compiler")
+
+    if(CMAKE_BASE_NAME STREQUAL "bcc32c")
+        message("Compiling using bcc32c")
+    endif()
+    if(CMAKE_BASE_NAME STREQUAL "bcc32x")
+        message("Compiling using bcc32x")
+    endif()
+
+    if(CMAKE_BASE_NAME STREQUAL "cpp32")
+    add_definitions(
+                 -w-8012                     #Comparing signed /unsigned
+                 -w-8057                     #Parameter never used
+                 -w-8004                     #'var' is assigned a value that is never used
+                 -w-8123                     #Path not found
+                 -w-8066                     #Unreachable code
+                 -w-8104                     #Local static with constructor...
+                 -w-8008                     #Condition is always false..
+            )
+    endif()
+
+    #SET(CMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS 1)
+    #SET(CMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS 1)
+
+    #SET(CMAKE_C_RESPONSE_FILE_LINK_FLAG "@")
+    #SET(CMAKE_CXX_RESPONSE_FILE_LINK_FLAG "@")
+    set(CMAKE_BUILD_TYPE "Release")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -tM -tR -DPOCO_DLL")
+    set(CMAKE_C_FLAGS "-tM -tR")
+    set(CMAKE_SHARED_LINKER_FLAGS "-tM -tR -lS:1048576 -lSc:4098 -lH:1048576 -lHc:8192")
+    set(CMAKE_MODULE_LINKER_FLAGS "-tM -tR -lS:1048576 -lSc:4098 -lH:1048576 -lHc:8192") 
+    set(CMAKE_EXE_LINKER_FLAGS "-tM -tR -lS:1048576 -lSc:4098 -lH:1048576 -lHc:8192")
+
+    option(ENABLE_DATA ON)
+    option(ENABLE_MONGODB OFF)
+    option(ENABLE_DATA_MYSQL ON)
+    option(ENABLE_DATA_SQLITE ON)
+    option(ENABLE_DATA_ODBC OFF)
+    option(ENABLE_TESTS OFF)
+    option(ENABLE_PAGECOMPILER OFF)
+    option(ENABLE_CRYPTO ON)
+    option(ENABLE_LONG_RUNNING_TESTS OFF)
+    option(ENABLE_PAGECOMPILER_FILE2PAGE OFF)
+    set(CMAKE_INSTALL_PREFIX "p:\\build")
+    option(ENABLE_REDIS OFF)
+    option(ENABLE_NETSSL OFF)
+
+    message("CMake flags: " ${CMAKE_CXX_FLAGS}) 
 endif()
 
 if(${MSVC})
@@ -45,10 +85,6 @@ if(${MSVC})
 endif()
 
 #Add Third Party Folders
-
-add_subdirectory(tclap)
-add_subdirectory(mkjson)
-
 if(${BUILD_SQLITE})
     add_subdirectory(SQLite)
 endif()
@@ -64,3 +100,6 @@ endif()
 if(${BUILD_CURL})
     add_subdirectory(curl)
 endif()
+
+#add_subdirectory(tclap)
+#add_subdirectory(mkjson)

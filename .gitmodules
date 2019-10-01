@@ -1,0 +1,4 @@
+[submodule "Poco"]
+	path = Poco
+	url = https://github.com/TotteKarlsson/poco.git
+	branch = embarcadero_10.3.2_bcc32c
