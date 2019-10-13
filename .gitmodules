@@ -1,0 +1,3 @@
+[submodule "PocoFork"]
+	path = PocoFork
+	url = https://github.com/TotteKarlsson/poco.git
