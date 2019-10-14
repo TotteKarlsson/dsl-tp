@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
+
+
 project(DSL_THIRD_PARTIES)
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -18,7 +20,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY 	${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY 	${PROJECT_BINARY_DIR}/bin)
 
 #=== OTHER DEFINITIONS 
-if(${BORLAND} )
+if( ${BORLAND} )
 
     message("Compiling using a BORLAND Compiler")
 
@@ -90,7 +92,7 @@ if(${BUILD_SQLITE})
 endif()
 
 if(${BUILD_POCO})
-    add_subdirectory(Poco)
+    add_subdirectory(Poco_1.9.3)
 endif()
 
 if(${BUILD_TINYXML2})
