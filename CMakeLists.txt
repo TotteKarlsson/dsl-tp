@@ -4,16 +4,15 @@ project(DSL_THIRD_PARTIES)
 #----- ThirdParties
 set(LIBRARY_POSTFIX  "" CACHE STRING "Appended to library name")
 OPTION(BUILD_SHARED_LIBS        "Build SHARED libs"	                    ON)
-OPTION(BUILD_STATIC_LIBS        "Build STATIC libs"	                    OFF)
 
 #--Components
-OPTION(BUILD_TINYXML2           "Build TINYXML2"	                    OFF)
-OPTION(BUILD_SQLITE	            "Build SQLite"	                        OFF)
-OPTION(BUILD_POCO	            "Build POCO"	                        OFF)
+OPTION(BUILD_TINYXML2           "Build TINYXML2"	                    ON)
+OPTION(BUILD_SQLITE	            "Build SQLite"	                        ON)
+OPTION(BUILD_POCO	            "Build POCO"	                        ON)
 OPTION(BUILD_CURL	            "Build cURL"	                        OFF)
 OPTION(BUILD_MKJSON             "Build MKJSON"	                        OFF)
-OPTION(INSTALL_TCLAP            "Install tclap"                         OFF)
-OPTION(INSTALL_DIRENT_HEADER    "Install dirent header"                 OFF)
+OPTION(INSTALL_TCLAP            "Install tclap"                         ON)
+
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY 	${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY 	${PROJECT_BINARY_DIR}/lib)
@@ -30,6 +29,12 @@ add_definitions(
              -w-8104                     #Local static with constructor...
              -w-8008                     #Condition is always false..
         )
+    #Borland hack.. we always need dynamic runtime (-tR) :(       
+    set(CMAKE_C_FLAGS               "${CMAKE_C_FLAGS} -tR")
+    set(CMAKE_CXX_FLAGS             "${CMAKE_CXX_FLAGS} -tR")
+    set(CMAKE_EXE_LINKER_FLAGS      "${CMAKE_EXE_LINKER_FLAGS} -tR")
+    set(CMAKE_MODULE_LINKER_FLAGS   "${CMAKE_MODULE_LINKER_FLAGS} -tR")
+    set(CMAKE_SHARED_LINKER_FLAGS   "${CMAKE_SHARED_LINKER_FLAGS} -tR")
 endif()
 
 if(${MSVC})
